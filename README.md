@@ -8,3 +8,19 @@ Note that the administrative access (sudo) without password may not be appropria
 
 Also, the default user "ubuntu" that is part of the default image gets the public ssh key from the terraform user's Home directory, so ensure that you have both parts of that key to support debugging this instance.
 
+## Launch a host
+
+Ensure your AWS SSO credentials are configured, or capture your AWS SECRET KEY and AWS SECRET KEY ID {not recommended}
+
+```sh
+export AWS_PROFILE={yourAWSssoProfile}
+export AWS_REGION=us-west-2 # this is where the Ubuntu AMI comes from
+```
+
+Then you should be able to plan and apply your enviornment
+
+```sh
+terraform init
+terraform plan -out jump.tfplan
+terraform apply jump.tfplan
+```
