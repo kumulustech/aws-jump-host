@@ -17,10 +17,43 @@ export AWS_PROFILE={yourAWSssoProfile}
 export AWS_REGION=us-west-2 # this is where the Ubuntu AMI comes from
 ```
 
-Then you should be able to plan and apply your enviornment
+### Get a static IP
+
+For consistency, if you need to set up VPN/Firewall whitelists, etc., and if you want a DNS name associated with the address.
+
+1. Update the Route53 zone_id and name fields, and if needed change the TTL (in case you're likely to change this IP often) information in pub-ip/pub-ip.tf.
+2. Allocate and associate the IP with the DNS name
 
 ```sh
+cd pub-ip/
 terraform init
-terraform plan -out jump.tfplan
-terraform apply jump.tfplan
+terraform plan -out ip.tfplan
+terraform apply ip.tfplan
+cd ..
+```
+
+### Launch a Host
+
+You'll need to modify this file host/host.tf to include your own users and their ssh-keys
+
+then:
+
+```sh
+cd host/
+terraform init
+terraform plan -out host.tfplan
+terraform apply host.tfplan
+```
+
+
+## Finished?  Tear it down
+
+```sh
+cd pub-ip
+terraform apply -destroy
+# answer 'yes'
+cd ../host
+terraform apply -destroy
+# answer 'yes'
+cd ..
 ```
